@@ -1,11 +1,20 @@
 certifi==2021.5.30
 cffi @ file:///tmp/build/80754af9/cffi_1625814692085/work
+chardet==3.0.4
 charset-normalizer==2.0.6
 click @ file:///tmp/build/80754af9/click_1621604852318/work
 filelock==3.3.0
 Flask @ file:///tmp/build/80754af9/flask_1632776664051/work
+googletrans==3.1.0a0
+h11==0.9.0
+h2==3.2.0
+hpack==3.0.0
+hstspreload==2021.10.1
+httpcore==0.9.1
+httpx==0.13.3
 huggingface-hub==0.0.19
-idna==3.2
+hyperframe==5.2.0
+idna==2.10
 importlib-metadata @ file:///tmp/build/80754af9/importlib-metadata_1631916692253/work
 itsdangerous @ file:///tmp/build/80754af9/itsdangerous_1621432558163/work
 Jinja2 @ file:///tmp/build/80754af9/jinja2_1624781299557/work
@@ -18,13 +27,17 @@ numpy @ file:///tmp/build/80754af9/numpy_and_numpy_base_1607448141537/work
 packaging==21.0
 pycparser @ file:///tmp/build/80754af9/pycparser_1594388511720/work
 pyparsing==2.4.7
+python-dotenv==0.19.0
 PyYAML==5.4.1
 regex==2021.9.30
 requests==2.26.0
+rfc3986==1.5.0
 sacremoses==0.0.46
 scikit-learn @ file:///tmp/build/80754af9/scikit-learn_1621370406642/work
 scipy @ file:///tmp/build/80754af9/scipy_1616703221928/work
+selenium==3.141.0
 six @ file:///tmp/build/80754af9/six_1623709665295/work
+sniffio==1.2.0
 threadpoolctl @ file:///Users/ktietz/demo/mc3/conda-bld/threadpoolctl_1629802263681/work
 tokenizers==0.10.3
 torch @ file:///tmp/build/80754af9/pytorch_1625259973999/work
