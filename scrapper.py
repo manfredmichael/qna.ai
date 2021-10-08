@@ -53,11 +53,36 @@ class PostPage:
         self.show_more_comments()
         comments = self.browser.find_elements_by_class_name("Mr508")
         for comment in comments:
-            question = self.parse_question(comment)
+            # question = self.parse_question(comment)
+            question = self.parse_question(comment) 
             print(question)
+            answer = 'test 2'
+            self.reply(comment, answer)
+
+
 
     def parse_question(self, comment):
-        question = comment.find_elements_by_tag_name("span")[1].text
+        return comment.find_elements_by_tag_name("span")[1].text
+
+    def reply(self, comment, answer):
+        # i know it's a mess but it works, pwease don touch it
+        self.browser.execute_script("arguments[0].scrollIntoView(true);", comment)
+        sleep(5)
+
+        buttons = comment.find_element_by_class_name("ZyFrc").find_elements_by_tag_name('button')
+        for button in buttons:
+            if 'Reply' in button.text:
+                self.browser.execute_script("arguments[0].click();", button)
+                break
+
+        sleep(5)
+
+        comment_box = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "textarea.Ypffh")))
+        self.browser.execute_script("arguments[0].scrollIntoView(true);", comment_box)
+        comment_box.send_keys(answer)
+        comment_box.send_keys(u'\ue007') # press enter
+        self.browser.execute_script("arguments[0].scrollIntoView(false);", comment_box)
+
 
     def show_more_comments(self):
         # keep clicking 'show more comments'
@@ -70,11 +95,11 @@ class PostPage:
                 break
 
 
-try:
-    login = LoginPage(browser)
-    login.login(USERNAME, PASSWORD)
-    post = PostPage(browser)
-    post.answer_all_questions()
-finally:
-    sleep(10)
-    browser.close()
+# try:
+login = LoginPage(browser)
+login.login(USERNAME, PASSWORD)
+post = PostPage(browser)
+post.answer_all_questions()
+# finally:
+#     sleep(10)
+    # browser.close()
