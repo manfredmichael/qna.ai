@@ -25,9 +25,14 @@ class LoginPage:
 
     def login(self, username=USERNAME, password=PASSWORD):
         try:
+            sleep(3)
             self.load_cookie()
+            sleep(5)
+            self.browser.get('https://www.instagram.com/')
             print('Logged in with cookie')
-        except:
+
+        except Exception as e:
+            print(f'Failed to log in with cookie: {e}')
             # wait until login page show up
             WebDriverWait(self.browser, 10).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='username']"))
@@ -49,11 +54,11 @@ class LoginPage:
             finally:
                 pass
 
-        def load_cookie(driver, path=COOKIE_PATH):
-             with open(path, 'rb') as cookiesfile:
-                 cookies = pickle.load(cookiesfile)
-                 for cookie in cookies:
-                     self.browser.add_cookie(cookie)
+    def load_cookie(self, path=COOKIE_PATH):
+         with open(path, 'rb') as cookiesfile:
+             cookies = pickle.load(cookiesfile)
+             for cookie in cookies:
+                 self.browser.add_cookie(cookie)
 
 
 class PostPage:
@@ -64,7 +69,7 @@ class PostPage:
         try:
             self.save_cookie()
         except Exception as e:
-            print(e)
+            print('Error when saving cookie: {e}')
 
     def answer_all_questions(self):
         self.show_more_comments()
@@ -122,6 +127,8 @@ class PostPage:
             except:
                 break
 
-    def save_cookie(driver, path=COOKIE_PATH):
+    def save_cookie(self, path=COOKIE_PATH):
         with open(path, 'wb') as f:
-            pickle.dump(self.browser.get_cookies(), f)
+            cookies = self.browser.get_cookies()
+            pickle.dump(cookies, f)
+            print(f'Saving cookies: {cookies}')
