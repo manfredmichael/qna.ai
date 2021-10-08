@@ -13,8 +13,11 @@ def main():
                              max_length=MAX_LENGTH)
     while True:
         try:
+            print('Answering questions..')
             post = PostPage(generator)
             post.answer_all_questions()
+        except Exception as e:
+            print(e)
         finally:
             sleep(600)
 

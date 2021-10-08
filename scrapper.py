@@ -1,4 +1,5 @@
 import os, dotenv
+import pickle
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -12,6 +13,7 @@ PASSWORD = os.getenv('PASSWORD')
 
 LOGIN_LINK = 'https://www.instagram.com/accounts/login/?source=auth_switcher' 
 POST_LINK = 'https://www.instagram.com/p/CUxJUUhJ1VS/'
+COOKIE_PATH = 'cookie.txt'
 
 browser = webdriver.Chrome('../chromedriver')
 browser.implicitly_wait(5)
@@ -22,26 +24,36 @@ class LoginPage:
         self.browser.get(login_link)
 
     def login(self, username=USERNAME, password=PASSWORD):
-        # wait until login page show up
-        WebDriverWait(self.browser, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='username']"))
-        )
-
-        # login
-        username_input = self.browser.find_element_by_css_selector("input[name='username']")
-        password_input = self.browser.find_element_by_css_selector("input[name='password']")
-        username_input.send_keys(username)
-        password_input.send_keys(password)
-        login_button = self.browser.find_element_by_xpath("//button[@type='submit']")
-        login_button.click()
-        
-        # remove popups
         try:
+            self.load_cookie()
+            print('Logged in with cookie')
+        except:
+            # wait until login page show up
             WebDriverWait(self.browser, 10).until(
-                EC.presence_of_element_located((By.XPATH, "//div[@class='cmbtv']/button[.='Not Now']"))
-            ).click()
+                EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='username']"))
+            )
+
+            # login
+            username_input = self.browser.find_element_by_css_selector("input[name='username']")
+            password_input = self.browser.find_element_by_css_selector("input[name='password']")
+            username_input.send_keys(username)
+            password_input.send_keys(password)
+            login_button = self.browser.find_element_by_xpath("//button[@type='submit']")
+            login_button.click()
         finally:
-            pass
+            # remove popups
+            try:
+                WebDriverWait(self.browser, 10).until(
+                    EC.presence_of_element_located((By.XPATH, "//div[@class='cmbtv']/button[.='Not Now']"))
+                ).click()
+            finally:
+                pass
+
+        def load_cookie(driver, path=COOKIE_PATH):
+             with open(path, 'rb') as cookiesfile:
+                 cookies = pickle.load(cookiesfile)
+                 for cookie in cookies:
+                     self.browser.add_cookie(cookie)
 
 
 class PostPage:
@@ -49,6 +61,10 @@ class PostPage:
         self.browser = browser
         self.browser.get(post_link)
         self.generator = generator
+        try:
+            self.save_cookie()
+        except Exception as e:
+            print(e)
 
     def answer_all_questions(self):
         self.show_more_comments()
@@ -105,3 +121,7 @@ class PostPage:
                 ).click()
             except:
                 break
+
+    def save_cookie(driver, path=COOKIE_PATH):
+        with open(path, 'wb') as f:
+            pickle.dump(self.browser.get_cookies(), f)
