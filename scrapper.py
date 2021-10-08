@@ -11,17 +11,17 @@ USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')
 
 LOGIN_LINK = 'https://www.instagram.com/accounts/login/?source=auth_switcher' 
-POST_LINK = 'https://www.instagram.com/p/CUuxjg1P-sZ/'
+POST_LINK = 'https://www.instagram.com/p/CUxJUUhJ1VS/'
 
 browser = webdriver.Chrome('../chromedriver')
 browser.implicitly_wait(5)
 
 class LoginPage:
-    def __init__(self, browser):
+    def __init__(self, browser=browser, login_link=LOGIN_LINK):
         self.browser = browser
-        self.browser.get(LOGIN_LINK)
+        self.browser.get(login_link)
 
-    def login(self, username, password):
+    def login(self, username=USERNAME, password=PASSWORD):
         # wait until login page show up
         WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='username']"))
@@ -45,19 +45,20 @@ class LoginPage:
 
 
 class PostPage:
-    def __init__(self, browser):
+    def __init__(self, generator, browser=browser, post_link=POST_LINK):
         self.browser = browser
-        self.browser.get(POST_LINK)
+        self.browser.get(post_link)
+        self.generator = generator
 
     def answer_all_questions(self):
         self.show_more_comments()
         comments = self.browser.find_elements_by_class_name("Mr508")
         for comment in comments:
             question = self.parse_question(comment) 
-            print(question)
 
             if self.not_answered(comment):
-                answer = '__answer__'
+                print(question)
+                answer = self.generator.generate_answer(question)['generated_text']
                 self.reply(comment, answer)
                 self.save(comment)
 
@@ -80,7 +81,6 @@ class PostPage:
         self.browser.execute_script("arguments[0].scrollIntoView(true);", comment_box)
 
         comment_box.send_keys(answer)
-        comment_box.send_keys(u'\ue007') # press enter
         self.browser.execute_script("arguments[0].scrollIntoView(false);", comment_box)
 
     def not_answered(self, comment):
@@ -105,13 +105,3 @@ class PostPage:
                 ).click()
             except:
                 break
-
-
-# try:
-login = LoginPage(browser)
-login.login(USERNAME, PASSWORD)
-post = PostPage(browser)
-post.answer_all_questions()
-# finally:
-#     sleep(10)
-    # browser.close()

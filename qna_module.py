@@ -21,7 +21,10 @@ class QNAGenerator():
         self.translator = Translator()
 
     def generate_answer(self, question):
-        language = self.translator.detect(question).lang
+        try:
+            language = self.translator.detect(question).lang
+        except:
+            language = None
 
         time0 = time.time()
         prompt = self.preprocess(question, language)
@@ -32,8 +35,10 @@ class QNAGenerator():
         return self.postprocess(result, language)
 
     def preprocess(self, question, language):
-        question = self.translator.translate(question, dest=language).text
-        print(question)
+        try:
+            question = self.translator.translate(question, dest=language).text
+        except:
+            print('Failed to translate question')
         question = question.replace('?', '') + '?'      # add exactly 1 question mark
         question = 'Question: {}\n'.format(question)    # create prompt for question answering
         question +=  'here is my answer:\n'
@@ -43,7 +48,10 @@ class QNAGenerator():
         
         # remove unfinished sentence
 
-        result['generated_text'] = self.translator.translate(result['generated_text'], dest=language).text
+        try:
+            result['generated_text'] = self.translator.translate(result['generated_text'], dest=language).text
+        except:
+            print('Failed to translate answer')
         if result['generated_text'][-1] != '.':
             result['generated_text'] = '.'.join(result['generated_text'].split('.')[:-1])
         return result 
