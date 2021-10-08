@@ -53,13 +53,13 @@ class PostPage:
         self.show_more_comments()
         comments = self.browser.find_elements_by_class_name("Mr508")
         for comment in comments:
-            # question = self.parse_question(comment)
             question = self.parse_question(comment) 
             print(question)
-            answer = 'test 2'
-            self.reply(comment, answer)
 
-
+            if self.not_answered(comment):
+                answer = '__answer__'
+                self.reply(comment, answer)
+                self.save(comment)
 
     def parse_question(self, comment):
         return comment.find_elements_by_tag_name("span")[1].text
@@ -76,13 +76,25 @@ class PostPage:
                 break
 
         sleep(5)
-
         comment_box = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "textarea.Ypffh")))
         self.browser.execute_script("arguments[0].scrollIntoView(true);", comment_box)
+
         comment_box.send_keys(answer)
         comment_box.send_keys(u'\ue007') # press enter
         self.browser.execute_script("arguments[0].scrollIntoView(false);", comment_box)
 
+    def not_answered(self, comment):
+        comment_text = ' '.join([r.text for r in comment.find_elements_by_tag_name("span")[:2]])
+        with open('answered_questions.txt', 'r') as f:
+            answered_questions = [r[:-1] for r in f.readlines()]
+            if comment_text in answered_questions:
+                return False
+        return True
+
+    def save(self, comment):
+        comment_text = ' '.join([r.text for r in comment.find_elements_by_tag_name("span")[:2]])
+        with open('answered_questions.txt', 'a+') as f:
+            f.write(comment_text + '\n')
 
     def show_more_comments(self):
         # keep clicking 'show more comments'
