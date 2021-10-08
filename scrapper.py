@@ -50,9 +50,22 @@ class PostPage:
         self.browser.get(POST_LINK)
 
     def get_all_comments(self):
-        comments = self.browser.find_elements_by_class_name("Mr508")
-        for r in comments:
-            print(r.text)
+        more_comments = True
+        while more_comments:
+            comments = self.browser.find_elements_by_class_name("Mr508")
+            for r in comments:
+                print(r.text)
+            more_comments = self.show_more_comments()
+
+    def show_more_comments(self):
+        # click 'show more comments' to show all comments
+        try:
+            WebDriverWait(self.browser, 10).until(
+                EC.presence_of_element_located((By.XPATH, "//button[@class='dCJp8 afkep']"))
+            ).click()
+            return True
+        except:
+            return False
 
 
 try:
@@ -62,4 +75,4 @@ try:
     post.get_all_comments()
 finally:
     sleep(10)
-    # browser.close()
+    browser.close()
