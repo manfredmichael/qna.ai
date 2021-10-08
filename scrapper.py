@@ -49,30 +49,32 @@ class PostPage:
         self.browser = browser
         self.browser.get(POST_LINK)
 
-    def get_all_comments(self):
-        more_comments = True
-        while more_comments:
-            comments = self.browser.find_elements_by_class_name("Mr508")
-            for r in comments:
-                print(r.text)
-            more_comments = self.show_more_comments()
+    def answer_all_questions(self):
+        self.show_more_comments()
+        comments = self.browser.find_elements_by_class_name("Mr508")
+        for comment in comments:
+            question = self.parse_question(comment)
+            print(question)
+
+    def parse_question(self, comment):
+        question = comment.find_elements_by_tag_name("span")[1].text
 
     def show_more_comments(self):
-        # click 'show more comments' to show all comments
-        try:
-            WebDriverWait(self.browser, 10).until(
-                EC.presence_of_element_located((By.XPATH, "//button[@class='dCJp8 afkep']"))
-            ).click()
-            return True
-        except:
-            return False
+        # keep clicking 'show more comments'
+        while True:
+            try:
+                WebDriverWait(self.browser, 10).until(
+                    EC.presence_of_element_located((By.XPATH, "//button[@class='dCJp8 afkep']"))
+                ).click()
+            except:
+                break
 
 
 try:
     login = LoginPage(browser)
     login.login(USERNAME, PASSWORD)
     post = PostPage(browser)
-    post.get_all_comments()
+    post.answer_all_questions()
 finally:
     sleep(10)
     browser.close()
