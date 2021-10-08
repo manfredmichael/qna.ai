@@ -6,6 +6,7 @@ from time import sleep
 MODEL = 'gpt2'
 MAX_LENGTH = 180 
 
+
 def main():
     login = LoginPage()
     login.login()

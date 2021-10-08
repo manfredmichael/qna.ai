@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 
 dotenv.load_dotenv()
@@ -18,6 +19,7 @@ COOKIE_PATH = 'cookie.txt'
 browser = webdriver.Chrome('../chromedriver')
 browser.implicitly_wait(5)
 
+
 class LoginPage:
     def __init__(self, browser=browser, login_link=LOGIN_LINK):
         self.browser = browser
@@ -27,8 +29,8 @@ class LoginPage:
         try:
             sleep(3)
             self.load_cookie()
-            sleep(5)
             self.browser.get('https://www.instagram.com/')
+            sleep(5)
             print('Logged in with cookie')
 
         except Exception as e:
@@ -51,7 +53,8 @@ class LoginPage:
                 WebDriverWait(self.browser, 10).until(
                     EC.presence_of_element_located((By.XPATH, "//div[@class='cmbtv']/button[.='Not Now']"))
                 ).click()
-            finally:
+            except TimeoutException:
+                print('no pop up found on login')
                 pass
 
     def load_cookie(self, path=COOKIE_PATH):
