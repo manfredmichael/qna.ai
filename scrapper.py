@@ -117,7 +117,7 @@ class PostPage:
         self.browser.execute_script("arguments[0].scrollIntoView(false);", comment_box)
 
     def not_answered(self, comment):
-        comment_text = ' '.join([r.text for r in comment.find_elements_by_tag_name("span")[:2]])
+        comment_text = ' '.join([r.text for r in comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-4:-2]])
         try:
             with open('answered_questions.txt', 'r') as f:
                 answered_questions = [r[:-1] for r in f.readlines()]
@@ -128,7 +128,7 @@ class PostPage:
         return True
 
     def save(self, comment):
-        comment_text = ' '.join([r.text for r in comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-3:-1]])
+        comment_text = ' '.join([r.text for r in comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-4:-2]])
         with open('answered_questions.txt', 'a+') as f:
             f.write(comment_text + '\n')
 
