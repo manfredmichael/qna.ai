@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.keys import Keys
 
 
 dotenv.load_dotenv()
@@ -105,7 +106,11 @@ class PostPage:
         self.browser.execute_script("arguments[0].scrollIntoView(true);", comment_box)
 
         comment_box.send_keys(answer)
-        self.browser.execute_script("arguments[0].scrollIntoView(false);", comment_box)
+        try:
+            comment_box.send_keys(Keys.RETURN)  # sometimes bot need to press enter to reply
+            print('Pressed enter to reply')
+        finally:
+            self.browser.execute_script("arguments[0].scrollIntoView(false);", comment_box)
 
     def not_answered(self, comment):
         comment_text = ' '.join([r.text for r in comment.find_elements_by_tag_name("span")[:2]])

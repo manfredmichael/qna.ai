@@ -55,7 +55,3 @@ class QNAGenerator():
         if result['generated_text'][-1] != '.':
             result['generated_text'] = '.'.join(result['generated_text'].split('.')[:-1])
         return result 
-
-
- 
-
