@@ -86,7 +86,6 @@ class PostPage:
                 sleep(random.random() * 3)
 
                 question = self.parse_question(comment) 
-
                 if self.not_answered(comment):
                     print(question)
                     answer = self.generator.generate_answer(question)['generated_text']
@@ -96,7 +95,7 @@ class PostPage:
                 print('Error caught while answering comments: {e}\nquestion: {question}')
 
     def parse_question(self, comment):
-        return comment.find_elements_by_tag_name("span")[1].text
+        return comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-3].text
 
     def reply(self, comment, answer):
         # i know it's a mess but it works, pwease don touch it
