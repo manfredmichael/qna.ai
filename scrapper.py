@@ -15,8 +15,8 @@ USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')
 
 LOGIN_LINK = 'https://www.instagram.com/accounts/login/?source=auth_switcher' 
-POST_LINK = 'https://www.instagram.com/p/CUxJUUhJ1VS/'
-# POST_LINK = 'https://www.instagram.com/p/CUybTMqpnE9/'
+# POST_LINK = 'https://www.instagram.com/p/CUxJUUhJ1VS/'
+POST_LINK = 'https://www.instagram.com/p/CUy9QhKJwa0/'
 COOKIE_PATH = 'cookie.txt'
 
 browser = webdriver.Chrome('../chromedriver')
