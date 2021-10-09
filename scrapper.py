@@ -1,5 +1,6 @@
 import os, dotenv
 import pickle
+import random
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -79,6 +80,9 @@ class PostPage:
         self.show_more_comments()
         comments = self.browser.find_elements_by_class_name("Mr508")
         for comment in comments:
+            # random pause to avoid getting detected as bot
+            sleep(random.random() * 20)
+
             question = self.parse_question(comment) 
 
             if self.not_answered(comment):
