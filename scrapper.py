@@ -98,7 +98,7 @@ class PostPage:
         return comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-3].text
 
     def reply(self, comment, answer):
-        # i know it's a mess but it works, pwease don touch it
+        # it's a mess but it works, please don't touch it
         self.browser.execute_script("arguments[0].scrollIntoView(true);", comment)
         sleep(5)
 
@@ -127,7 +127,7 @@ class PostPage:
         return True
 
     def save(self, comment):
-        comment_text = ' '.join([r.text for r in comment.find_elements_by_tag_name("span")[:2]])
+        comment_text = ' '.join([r.text for r in comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-3:-1].text])
         with open('answered_questions.txt', 'a+') as f:
             f.write(comment_text + '\n')
 
