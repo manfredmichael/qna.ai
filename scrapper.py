@@ -16,6 +16,7 @@ PASSWORD = os.getenv('PASSWORD')
 
 LOGIN_LINK = 'https://www.instagram.com/accounts/login/?source=auth_switcher' 
 POST_LINK = 'https://www.instagram.com/p/CUxJUUhJ1VS/'
+# POST_LINK = 'https://www.instagram.com/p/CUybTMqpnE9/'
 COOKIE_PATH = 'cookie.txt'
 
 browser = webdriver.Chrome('../chromedriver')
@@ -80,16 +81,19 @@ class PostPage:
         self.show_more_comments()
         comments = self.browser.find_elements_by_class_name("Mr508")
         for comment in comments:
-            # random pause to avoid getting detected as bot
-            sleep(random.random() * 20)
+            try:
+                # random pause to avoid getting detected as bot
+                sleep(random.random() * 3)
 
-            question = self.parse_question(comment) 
+                question = self.parse_question(comment) 
 
-            if self.not_answered(comment):
-                print(question)
-                answer = self.generator.generate_answer(question)['generated_text']
-                self.reply(comment, answer)
-                self.save(comment)
+                if self.not_answered(comment):
+                    print(question)
+                    answer = self.generator.generate_answer(question)['generated_text']
+                    self.reply(comment, answer)
+                    self.save(comment)
+            except Exception as e:
+                print('Error caught while answering comments: {e}\nquestion: {question}')
 
     def parse_question(self, comment):
         return comment.find_elements_by_tag_name("span")[1].text
@@ -110,11 +114,7 @@ class PostPage:
         self.browser.execute_script("arguments[0].scrollIntoView(true);", comment_box)
 
         comment_box.send_keys(answer)
-        try:
-            comment_box.send_keys(Keys.RETURN)  # sometimes bot need to press enter to reply
-            print('Pressed enter to reply')
-        finally:
-            self.browser.execute_script("arguments[0].scrollIntoView(false);", comment_box)
+        self.browser.execute_script("arguments[0].scrollIntoView(false);", comment_box)
 
     def not_answered(self, comment):
         comment_text = ' '.join([r.text for r in comment.find_elements_by_tag_name("span")[:2]])
