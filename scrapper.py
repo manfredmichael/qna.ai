@@ -75,7 +75,7 @@ class PostPage:
         try:
             self.save_cookie()
         except Exception as e:
-            print('Error when saving cookie: {e}')
+            print(f'Error when saving cookie: {e}')
 
     def answer_all_questions(self):
         self.show_more_comments()
@@ -91,8 +91,9 @@ class PostPage:
                     answer = self.generator.generate_answer(question)['generated_text']
                     self.reply(comment, answer)
                     self.save(comment)
+                    print('answered successfuly')
             except Exception as e:
-                print('Error caught while answering comments: {e}\nquestion: {question}')
+                print(f'Error caught while answering comments: {e}\nquestion: {question}')
 
     def parse_question(self, comment):
         return comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-3].text
@@ -127,7 +128,7 @@ class PostPage:
         return True
 
     def save(self, comment):
-        comment_text = ' '.join([r.text for r in comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-3:-1].text])
+        comment_text = ' '.join([r.text for r in comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-3:-1]])
         with open('answered_questions.txt', 'a+') as f:
             f.write(comment_text + '\n')
 
