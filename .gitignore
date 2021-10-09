@@ -1,4 +1,5 @@
 .env
 cookie.txt
+answered_questions.txt
 env
 **/__pycache__
