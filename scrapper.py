@@ -33,7 +33,7 @@ class LoginPage:
             sleep(3)
             self.load_cookie()
             self.browser.get('https://www.instagram.com/')
-            sleep(5)
+            sleep(2)
             print('Logged in with cookie')
 
         except Exception as e:
@@ -53,7 +53,7 @@ class LoginPage:
         finally:
             # remove popups
             try:
-                WebDriverWait(self.browser, 10).until(
+                WebDriverWait(self.browser, 3).until(
                     EC.presence_of_element_located((By.XPATH, "//div[@class='cmbtv']/button[.='Not Now']"))
                 ).click()
             except TimeoutException:
@@ -85,18 +85,20 @@ class PostPage:
                 # random pause to avoid getting detected as bot
                 sleep(random.random() * 3)
 
-                question = self.parse_question(comment) 
-                if self.not_answered(comment):
+                name, question = self.parse_question(comment) 
+                if self.not_answered(name, question):
                     print(question)
                     answer = self.generator.generate_answer(question)['generated_text']
                     self.reply(comment, answer)
-                    self.save(comment)
+                    self.save(name, question)
                     print('answered successfuly')
             except Exception as e:
                 print(f'Error caught while answering comments: {e}\nquestion: {question}')
 
     def parse_question(self, comment):
-        return comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-3].text
+        name = comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-4].text
+        question = comment.find_element_by_tag_name('div').find_elements_by_tag_name("span")[-3].text
+        return name, question 
 
     def reply(self, comment, answer):
         # it's a mess but it works, please don't touch it
@@ -116,9 +118,9 @@ class PostPage:
         comment_box.send_keys(answer)
         self.browser.execute_script("arguments[0].scrollIntoView(false);", comment_box)
 
-    def not_answered(self, comment):
+    def not_answered(self, name, question):
         # get name + question
-        comment_text = ' '.join([r.text for r in comment.find_elements_by_tag_name("span")[:2]])
+        comment_text = ' '.join([name, question])
         try:
             with open('answered_questions.txt', 'r') as f:
                 answered_questions = [r[:-1] for r in f.readlines()]
@@ -129,9 +131,9 @@ class PostPage:
             pass
         return True
 
-    def save(self, comment):
+    def save(self, name, question):
         # get name + question
-        comment_text = ' '.join([r.text for r in comment.find_elements_by_tag_name("span")[:2]])
+        comment_text = ' '.join([name, question])
         with open('answered_questions.txt', 'a+') as f:
             f.write(comment_text + '\n')
 
@@ -149,4 +151,4 @@ class PostPage:
         with open(path, 'wb') as f:
             cookies = self.browser.get_cookies()
             pickle.dump(cookies, f)
-            print(f'Saving cookies: {cookies}')
+            print(f'Saving cookies..')
