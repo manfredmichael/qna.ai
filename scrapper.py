@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 dotenv.load_dotenv()
@@ -33,7 +34,6 @@ class LoginPage:
             sleep(3)
             self.load_cookie()
             self.browser.get('https://www.instagram.com/')
-            sleep(2)
             print('Logged in with cookie')
 
         except Exception as e:
@@ -115,7 +115,15 @@ class PostPage:
         comment_box = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "textarea.Ypffh")))
         self.browser.execute_script("arguments[0].scrollIntoView(true);", comment_box)
 
-        comment_box.send_keys(answer)
+        # replace new line with shift+enter
+        for part in answer.split('\n'):
+            comment_box.send_keys(part)
+            ActionChains(self.browser).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER).perform()
+        try:
+            comment_box.send_keys(Keys.ENTER)
+        except:
+            print('Don\'t need to presse enter')
+        # comment_box.send_keys(answer)
         self.browser.execute_script("arguments[0].scrollIntoView(false);", comment_box)
 
     def not_answered(self, name, question):
@@ -141,7 +149,7 @@ class PostPage:
         # keep clicking 'show more comments'
         while True:
             try:
-                WebDriverWait(self.browser, 10).until(
+                WebDriverWait(self.browser, 5).until(
                     EC.presence_of_element_located((By.XPATH, "//button[@class='dCJp8 afkep']"))
                 ).click()
             except:

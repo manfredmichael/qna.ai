@@ -15,12 +15,12 @@ def singleton(class_):
 
 @singleton
 class QNAGenerator():
-    def __init__(self, model='gpt2', max_length=300):
+    def __init__(self, model='gpt2', max_length=1200):
         self.pipeline = pipeline('text-generation', model=model)
         self.max_length=max_length
         self.translator = Translator()
 
-    def generate_answer(self, question):
+    def generate_answer(self, question, iteration=1):
         try:
             language = self.translator.detect(question).lang
         except:
@@ -45,9 +45,7 @@ class QNAGenerator():
         return question
 
     def postprocess(self, result, language):
-        
         # remove unfinished sentence
-
         try:
             result['generated_text'] = self.translator.translate(result['generated_text'], dest=language).text
         except:
@@ -55,3 +53,15 @@ class QNAGenerator():
         if result['generated_text'][-1] != '.':
             result['generated_text'] = '.'.join(result['generated_text'].split('.')[:-1])
         return result 
+
+if __name__=='__main__':
+    generator = QNAGenerator()
+    while True:
+        question = input('Type your question here: ')
+        result = generator.generate_answer(question)
+        print('Inference time: {}'.format(result['inference_time']))
+        print('Question: {}'.format(question))
+        print('Answer: {}'.format(result['generated_text']))
+        print('~~~~~~~~~~~~~~~~~~~~~~~~')
+
+    

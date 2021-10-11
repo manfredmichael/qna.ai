@@ -21,8 +21,10 @@ def main():
             print(f'error caught on main script:{e}')
         finally:
             print('Done..')
-            sleep(240)
-
+            for i in range(120, 0, -1):
+                sleep(1)
+                print(r'Checking questions in {}'.format(i), end='\r', flush=True)
+            print(r'                            '.format(i), end='\r', flush=True)
 if __name__ == '__main__':
     main()
 
