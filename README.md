@@ -7,8 +7,8 @@ Ask Transformer Bot your most random questions on instagram! All answers are pur
 
 ## Answers Compilation
 
-<img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q1.jpg?raw=true" alt="drawing" width="600"/>
-<img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q2.jpg?raw=true" alt="drawing" width="600"/>
-<img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q3.jpg?raw=true" alt="drawing" width="600"/>
-<img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q4.jpg?raw=true" alt="drawing" width="600"/>
-<img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q5.jpg?raw=true" alt="drawing" width="600"/>
+<img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q1.jpg?raw=true" alt="drawing" width="450"/>
+<img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q2.jpg?raw=true" alt="drawing" width="450"/>
+<img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q3.jpg?raw=true" alt="drawing" width="450"/>
+<img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q4.jpg?raw=true" alt="drawing" width="450"/>
+<img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q5.jpg?raw=true" alt="drawing" width="450"/>
