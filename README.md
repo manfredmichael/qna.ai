@@ -12,3 +12,11 @@ Ask Transformer Bot your most random questions on instagram! All answers are pur
 <img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q3.jpg?raw=true" alt="drawing" width="450"/>
 <img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q4.jpg?raw=true" alt="drawing" width="450"/>
 <img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/q5.jpg?raw=true" alt="drawing" width="450"/>
+
+
+<div align="center">
+  
+  ### Read more answers here
+  https://www.instagram.com/p/CUy9QhKJwa0/
+  
+</div>
