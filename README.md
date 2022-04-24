@@ -7,7 +7,7 @@ Ask Transformer Bot your most random questions on instagram! All answers are pur
 
 ### Built With
 
-I'm using multiple instagram accounts to answer the questions in turn to avoid bot detection.
+I'm using multiple instagram accounts to answer the questions.
 
 * [HuggingFace Transformers](https://huggingface.co/docs/transformers/index)
 * [Selenium](https://selenium-python.readthedocs.io/)
@@ -24,7 +24,7 @@ I'm using multiple instagram accounts to answer the questions in turn to avoid b
 
 <div align="center">
   
-  ### Read more answers here
+  ### See more answers here
   https://www.instagram.com/p/CUy9QhKJwa0/
   
 </div>
