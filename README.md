@@ -1,5 +1,11 @@
 <div align="center">
 <img src="https://github.com/manfredmichael/qna.ai/blob/main/imgs/logo.png" alt="drawing" width="200"/>
+  
+<br/>
+<br/>
+<br/>
+  
+> *"Life is not a matter of the beginning, or the end, of the human race, but of life itself"* -GPT 2
 </div>
 
 # qna.ai
